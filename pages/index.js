@@ -1,20 +1,35 @@
-const { createImage } = require('./imageGenerator'); // Example import if you have a separate image generator
+import { useState } from 'react';
 
-module.exports = async (req, res) => {
-  if (req.method === 'POST') {
-    const { prompt } = req.body;
+export default function Home() {
+  const [prompt, setPrompt] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
-    if (!prompt) {
-      return res.status(400).json({ error: 'Prompt is required' });
+  const generateImage = async () => {
+    const response = await fetch('/api', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      setImageUrl(data.imageUrl);
+    } else {
+      console.error(data.error);
     }
+  };
 
-    try {
-      const imageUrl = await createImage(prompt); // Your image generation logic
-      return res.status(200).json({ imageUrl });
-    } catch (error) {
-      return res.status(500).json({ error: 'Failed to generate image' });
-    }
-  } else {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-};
+  return (
+    <div>
+      <h1>Image Generator</h1>
+      <input
+        type="text"
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder="Enter image description"
+      />
+      <button onClick={generateImage}>Generate Image</button>
+      {imageUrl && <img src={imageUrl} alt="Generated" />}
+    </div>
+  );
+}
