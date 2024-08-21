@@ -13,6 +13,11 @@ const generateImage = async (req: NextApiRequest, res: NextApiResponse) => {
       // Extract prompt from request body
       const { prompt } = req.body;
 
+      if (!prompt || typeof prompt !== 'string') {
+        res.status(400).json({ error: 'Invalid prompt' });
+        return;
+      }
+
       // Call Fal.ai API to generate the image
       const result = await fal.subscribe('fal-ai/flux/dev', {
         input: {
@@ -28,9 +33,16 @@ const generateImage = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
+      // Check for errors in the result
+      if (result.error) {
+        res.status(500).json({ error: result.error });
+        return;
+      }
+
       // Return the URL of the generated image
       res.status(200).json(result);
     } catch (error) {
+      console.error('Error generating image:', error); // More detailed error logging
       res.status(500).json({ error: 'Failed to generate image' });
     }
   } else {
