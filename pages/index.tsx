@@ -14,8 +14,11 @@ const Home = () => {
         },
         body: JSON.stringify({ prompt }),
       });
+
       const data = await response.json();
-      setImage(data.imageUrl); // Adjust according to API response
+      if (data.images && data.images.length > 0) {
+        setImage(data.images[0].url); // Display the first generated image
+      }
     } catch (error) {
       console.error('Failed to generate image:', error);
     }
