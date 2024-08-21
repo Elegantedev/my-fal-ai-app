@@ -1,9 +1,13 @@
 {
   "version": 2,
   "builds": [
-    { "src": "index.js", "use": "@vercel/node" }
+    { "src": "api/index.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/" }
+    // Rewrites for API
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    // Example custom rewrites
+    { "src": "/old-path/(.*)", "dest": "/new-path/$1" },
+    { "src": "/static/(.*)", "dest": "/public/$1" }
   ]
 }
