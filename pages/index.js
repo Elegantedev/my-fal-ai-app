@@ -1,4 +1,3 @@
-// pages/index.js
 import { useState } from 'react';
 
 export default function Home() {
@@ -9,24 +8,28 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setImageUrl(null); // Reset image URL when starting a new request
 
     try {
-      const response = await fetch('/api/fal/proxy', {
+      console.log('Sending prompt:', prompt);
+
+      const response = await fetch('/api', { // This endpoint matches the API route file
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          input: {
-            prompt,
-            model_name: "stabilityai/stable-diffusion-xl-base-1.0",
-            image_size: "square_hd"
-          }
-        })
+        body: JSON.stringify({ prompt }),
       });
 
+      if (!response.ok) {
+        console.error('API response error:', response.status, response.statusText);
+        throw new Error('API request failed');
+      }
+
       const data = await response.json();
-      if (data.images && data.images[0]) {
+      console.log('Received data:', data);
+
+      if (data && data.images && data.images.length > 0) {
         setImageUrl(data.images[0].url);
       } else {
         console.error('Image URL not found in response:', data);
