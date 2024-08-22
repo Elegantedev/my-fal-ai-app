@@ -1,12 +1,4 @@
 {
-  "name": "your-project-name",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
   "dependencies": {
     "@fal-ai/serverless-client": "^1.0.0",
     "@fal-ai/serverless-proxy": "^1.0.0",
