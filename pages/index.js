@@ -11,17 +11,23 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api', {
+      const response = await fetch('/api/fal/proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({
+          input: {
+            prompt,
+            model_name: "stabilityai/stable-diffusion-xl-base-1.0",
+            image_size: "square_hd"
+          }
+        })
       });
 
       const data = await response.json();
-      if (data.imageUrl) {
-        setImageUrl(data.imageUrl);
+      if (data.images && data.images[0]) {
+        setImageUrl(data.images[0].url);
       } else {
         console.error('Image URL not found in response:', data);
       }
