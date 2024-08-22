@@ -1,0 +1,21 @@
+# Node modules
+node_modules/
+
+# Build output
+.next/
+out/
+
+# Local environment variables
+.env
+
+# Vercel configuration
+.vercel/
+
+# Logs
+*.log
+
+# MacOS specific files
+.DS_Store
+
+# Windows specific files
+Thumbs.db
