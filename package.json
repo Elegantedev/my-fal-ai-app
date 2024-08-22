@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "@fal-ai/serverless-client": "^1.0.0",
-    "@fal-ai/serverless-proxy": "^1.0.0",
+    "@fal-ai/serverless-client": "^0.1.1",  // This is the correct version for fal-ai packages as of now
+    "@fal-ai/serverless-proxy": "^0.1.1",   // This is the correct version for fal-ai packages as of now
     "next": "^13.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
