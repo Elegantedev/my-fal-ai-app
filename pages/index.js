@@ -13,7 +13,7 @@ export default function Home() {
     try {
       console.log('Sending prompt:', prompt);
 
-      const response = await fetch('/api', { // This endpoint matches the API route file
+      const response = await fetch('/api/fal/proxy', { // Ensure this is the correct endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
