@@ -4,16 +4,18 @@ export default function Home() {
   const [prompt, setPrompt] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setImageUrl(null); // Reset image URL when starting a new request
+    setImageUrl(null);
+    setError('');
 
     try {
       console.log('Sending prompt:', prompt);
 
-      const response = await fetch('/api/fal/proxy', { // Ensure this is the correct endpoint
+      const response = await fetch('/api/fal/proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,7 +24,9 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        console.error('API response error:', response.status, response.statusText);
+        const errorText = await response.text();
+        console.error('API response error:', response.status, errorText);
+        setError('Failed to generate image.');
         throw new Error('API request failed');
       }
 
@@ -33,9 +37,11 @@ export default function Home() {
         setImageUrl(data.images[0].url);
       } else {
         console.error('Image URL not found in response:', data);
+        setError('Image URL not found.');
       }
     } catch (error) {
       console.error('Error generating image:', error);
+      setError('Error generating image.');
     } finally {
       setLoading(false);
     }
@@ -55,6 +61,7 @@ export default function Home() {
         <button type="submit" disabled={loading}>Generate Image</button>
       </form>
       {loading && <p>Loading...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       {imageUrl && <img src={imageUrl} alt="Generated" />}
     </div>
   );
