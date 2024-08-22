@@ -6,6 +6,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Place the handleSubmit function here
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -22,6 +23,9 @@ export default function Home() {
         },
         body: JSON.stringify({ prompt }),
       });
+
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -47,6 +51,7 @@ export default function Home() {
     }
   };
 
+  // Return JSX
   return (
     <div>
       <h1>Image Generator</h1>
